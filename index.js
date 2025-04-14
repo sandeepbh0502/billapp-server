@@ -68,7 +68,7 @@ app.post("/api/send-bills", async (req, res) => {
   for (const bill of bills) {
     const { filePath, fileName } = generatePDF(bill);
     // Construct the public URL. For local testing, we use localhost; in production, use your domain.
-    const publicUrl = `http://localhost:5000/temp/${fileName}`;
+    const publicUrl = `https://billapp-server.vercel.app/temp/${fileName}`;
 
     await sendBillToWhatsApp(bill, publicUrl);
 
@@ -81,6 +81,12 @@ app.post("/api/send-bills", async (req, res) => {
   }
 
   res.status(200).send("Bills sent successfully.");
+});
+
+app.get("/", () => {
+  res
+    .status(200)
+    .json({ status: "healthy", message: "server is running well." });
 });
 
 app.listen(5000, () => {
